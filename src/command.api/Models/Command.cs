@@ -1,11 +1,12 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
-namespace command-api.Models
+namespace command.api.Models
 {
-    public class Command 
+    public class Command
     {
         [Required]
-        public int Id{ get; set; }
+        public int Id { get; set; }
 
         [Required]
         [MaxLength(200)]

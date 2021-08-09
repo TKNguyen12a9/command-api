@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using command.api.Data;
+
 
 namespace command_api
 {
@@ -16,6 +18,13 @@ namespace command_api
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers();
+            // service is created each time it is requested from the service container
+            // services.AddTransient<ICommandAPIRepo, MockCommandAPIRepo>();  
+            // service is created once per client request (connection)
+            services.AddScoped<ICommandAPIRepo, MockCommandAPIRepo>();
+            // service is created once and reused
+            // services.AddSingleton<ICommandAPIRepo, MockCommandAPIRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -28,12 +37,12 @@ namespace command_api
 
             app.UseRouting();
 
+            // app.UseAuthentication();
+            // app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                endpoints.MapControllers();
             });
         }
     }
